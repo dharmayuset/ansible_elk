@@ -1,0 +1,55 @@
+---
+# tasks file for elk
+#
+#- name: copy java file
+#  copy:
+#          src: jdk-8u77-linux-x64.rpm
+#          dest: /root/
+- name: Install Java File
+  dnf:
+          name: java-11-openjdk-devel
+          state: present
+#- name: add rpm key
+#  rpm_key:
+#          state: present
+#          key: http://packages.elastic.co/GPG-KEY-elasticsearch
+#          validate_certs: no
+- name: shell rpm key add
+  shell: rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+- name: yum repo add elastic
+  yum_repository:
+          name: elk_repo
+          description: repo elk
+          baseurl: https://artifacts.elastic.co/packages/7.x/yum
+          gpgcheck: yes
+          gpgkey: https://artifacts.elastic.co/packages/7.x/yum
+          enabled: yes
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+- name: install elk
+  yum:
+          name: elasticsearch
+          state: present
+- name: merubah config
+  lineinfile:
+          path: /etc/elasticsearch/elasticsearch.yml
+          regexp: '^network.host:'
+          line: 'network.host: localhost'
+- name: start service elk
+  systemd:
+          name: elasticsearch
+          state: started
+          enabled: yes
+- name: install kibana
+  yum:
+          name: kibana
+          state: present
+- name: service kibana start and enable
+  systemd:
+          name: kibana
+          enabled: yes
+          state: started
+          #- name: add password in file htpasswd
+          #  lineinfile: 
