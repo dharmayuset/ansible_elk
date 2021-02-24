@@ -1,12 +1,12 @@
 Role Name
 =========
 
-A brief description of the role goes here.
-
+Ansible ELK for automation my ELK installation 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+if you install from host to host(localhost) itself you just use "host: localhost" in your playbook.
+if you install from host to another host, you just install ssh-pass.
 
 Role Variables
 --------------
